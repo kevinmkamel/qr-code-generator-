@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Code Generator</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+
+        #qr-code-generator {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: white;
+            padding: 30px;
+            border-radius: 5px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        input[type="text"] {
+            width: 300px;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: dodgerblue;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-bottom: 10px;
+        }
+
+        #result {
+            margin-top: 20px;
+        }
+       
+    </style>
+</head>
+<body>
+    <div id="qr-code-generator">
+        <h1>QR Code Generator</h1>
+        <input type="text" id="qr-code-input" placeholder="Enter URL or Text" required>
+        <button id="qr-code-button" onclick="generateQRCode()">Generate QR Code</button>
+        <div id="result">
+            <img id="qr-code" src="" alt="QR Code">
+        </div>
+        <button id="download-button" onclick="downloadQRCode()"> DOWNLOAD</button>
+    </div>
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-analytics.js";
+        // TODO: Add SDKs for Firebase products that you want to use
+        // https://firebase.google.com/docs/web/setup#available-libraries
+      
+        // Your web app's Firebase configuration
+        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+        const firebaseConfig = {
+          apiKey: "AIzaSyDKXhURXLQOXe5hqzRNM9zHsY2f2uqwNJU",
+          authDomain: "qr-code-generator-dceb1.firebaseapp.com",
+          projectId: "qr-code-generator-dceb1",
+          storageBucket: "qr-code-generator-dceb1.appspot.com",
+          messagingSenderId: "686733722423",
+          appId: "1:686733722423:web:2a7e5e821dd0e5d90790b2",
+          measurementId: "G-GJVYX919PK"
+        };
+      
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+      </script>
+
+    <script>
+       function downloadQRCode() {
+  // Get the QR code element
+  var qrcode = document.getElementById("qr-code");
+
+  // Create a link and trigger download
+  var link = document.createElement('a');
+  link.href = qrcode.src;
+  link.download = 'qr_code.png';
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
+        function generateQRCode() {
+            const qrCodeInput = document.getElementById('qr-code-input');
+            const qrCode = document.getElementById('qr-code');
+
+            if (!qrCodeInput.checkValidity()) {
+                alert('Please enter a valid URL or text.');
+                return;
+            }
+
+            qrCode.src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(qrCodeInput.value)}`;
+        }
+    </script>
+</body>
+</html>
